@@ -1,2 +1,5 @@
 # BedrockPlayerManager
-Execute commands when a player joins depending on their client version (bedrock/java/all)..
+
+This plugin is an extension for the awesome GeyserMC. Geyser allows basically Bedrock players to join any Minecraft Java server. BedrockPlayerManager dependents on the Floodgate API what is part of GeyserMC
+
+Ressource link: https://www.spigotmc.org/resources/bedrock-player-managment-for-floodgate-geyser.82278/
