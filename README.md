@@ -7,3 +7,5 @@ Ressource link: https://www.spigotmc.org/resources/bedrock-player-managment-for-
 Bug reports: https://github.com/ofunny/BedrockPlayerManager/issues
 
 Discord: https://discord.ofunny.world
+
+<a href="https://discord.ofunny.world" target="_blank" ><img src="https://discord.ofunny.world/discord_logo400x136.png"></a>
