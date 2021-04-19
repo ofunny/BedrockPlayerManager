@@ -42,18 +42,6 @@ public class BedrockPlayerManager extends JavaPlugin {
             pluginManager.disablePlugin(this);
             return;
         }// end if configuration
-
-		/*
-		 * Check if the floodgade plugin exists,
-		 * only exception is the modul commands for all players what can work without it!
-		 */
-		if(
-			(config.isJavaJoinCommandModuleEnabled() || config.isBedrockJoinCommandModuleEnabled() || config.isPermissionModuleEnabled()) &&
-			getServer().getPluginManager().getPlugin(config.getFloodgate_v1_PluginName()) == null && 
-			getServer().getPluginManager().getPlugin(config.getFloodgate_v2_PluginName()) == null ) {
-			logger.logError("Floodgate plugin not found! Did you install Floodgate and did you set the correct version (development.floodgate_version) in the config.yml? Only the modules 'join_commands.all' and 'quit_commands.all' can work without Floodgate – in that case please deactivate all other modules in the config.yml first and than restart the server!");
-			return;
-		}// if Luckperms installes
 		
 	    /*
 	     * Register EventListener.

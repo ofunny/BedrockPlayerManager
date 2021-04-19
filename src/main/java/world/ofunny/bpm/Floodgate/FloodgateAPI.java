@@ -34,27 +34,27 @@ public class FloodgateAPI {
 		Logger logger = Logger.get();
 		switch(Config.get().getFloodgateVersion()) {
 			case "2":
-				logger.debugLogInfo("manually initialising Floodgate API version 2.x");
+				logger.debugLogInfo("manually initialising Floodgate API version 2.x (please make sure you intalled the Floodgate 2.x correctly)!");
 	        	floodgateAPI = new Floodgate_2_0();
 	            break;
 			case "1":
-				logger.debugLogInfo("manually initialising Floodgate API version 1.x");
+				logger.debugLogInfo("manually initialising Floodgate API version 1.x (please make sure you intalled the Floodgate 1.x correctly)!");
             	floodgateAPI = new Floodgate_1_0();
                 break;
             default:
             	// performing auto detection …
             	if(isClass("org.geysermc.floodgate.api.FloodgateApi")) {
             		// Floodgate 2.x has been found!
-            		logger.debugLogInfo("automatically initialising Floodgate API version 2.x");
+            		logger.debugLogInfo("automatically initialising Floodgate API version 2.x!");
             		floodgateAPI = new Floodgate_2_0();
             	} else if(isClass("org.geysermc.floodgate.FloodgateAPI")) {
             		// Floodgate 1.x has been found!
-            		logger.debugLogInfo("automatically initialising Floodgate API version 1.x");
+            		logger.debugLogInfo("automatically initialising Floodgate API version 1.x!");
             		floodgateAPI = new Floodgate_1_0();
             	} else {
             		// Floodgate has not been found!
-            		logger.debugLogInfo("neither Floodgate API version 1.x nor 2.x has been detected – please install the Floodgate plugin correctly!");
-            		floodgateAPI = null;
+            		logger.logError("neither Floodgate API version 1.x nor 2.x has been detected – please install the Floodgate plugin correctly!");
+            		floodgateAPI = new Floodgate_Dummy();
             	}// end if Floodgate 1, 2 or none
         }// end switch version
 

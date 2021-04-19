@@ -199,15 +199,6 @@ public class Data {
 			
 			// Set the correct Floodgate name
 			
-			//FIXME
-			/* 
-			if(floodgateVersion == 1) {
-				floodgatePluginName = floodgate_v1_PluginName;
-			} else {
-				floodgatePluginName = floodgate_v2_PluginName;
-			}// end if API 1.0 or 2.0
-			*/
-			
 	}// end config
 	
 	/**
