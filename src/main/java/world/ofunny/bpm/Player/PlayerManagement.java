@@ -70,28 +70,38 @@ public enum PlayerManagement {
 		playerBedrockStateCache.put(player.getUniqueId(), FloodgateAPI.get().isBedrockPlayer(player));
 		
 		/*
-		 * Perform permission group assignment/removal on join if activated.
+		 * If the permission module has been activated.
 		 */
-    	if(config.getJoinPermissionExecutionDelay() < 1L) {
-    		joinCallPermissionModule(player);
-    	} else {
-    		bukkitScheduler.scheduleSyncDelayedTask(config.getPlugin(), new Runnable() { 
-    			public void run() { joinCallPermissionModule(player); }// end run with delay
-    		}, config.getJoinPermissionExecutionDelay());
-    	}// end if executionDelay
+		if(config.isPermissionModuleEnabled()) {
+			/*
+			 * Perform permission group assignment/removal on join if activated.
+			 */
+	    	if(config.getJoinPermissionExecutionDelay() < 1L) {
+	    		joinCallPermissionModule(player);
+	    	} else {
+	    		bukkitScheduler.scheduleSyncDelayedTask(config.getPlugin(), new Runnable() { 
+	    			public void run() { joinCallPermissionModule(player); }// end run with delay
+	    		}, config.getJoinPermissionExecutionDelay());
+	    	}// end if executionDelay
+		}// end if permissionModule
 
-		
 		/*
-		 * Perform command execution on join on join if activated.
+		 * if at least one command module is enabled
 		 */
-    	if(config.getJoinCommandExecutionDelay() < 1L) {
-    		joinCallCommandModule(player);
-    	} else {
-    		bukkitScheduler.scheduleSyncDelayedTask(config.getPlugin(), new Runnable() {
-    			public void run() { joinCallCommandModule(player); }// end run with delay
-    		}, config.getJoinCommandExecutionDelay());
-    	}// end if executionDelay
-		
+		if(config.isJavaJoinCommandModuleEnabled() ||
+		   config.isBedrockJoinCommandModuleEnabled() ||
+		   config.isAllJoinCommandModuleEnabled()) {
+			/*
+			 * Perform command execution on join on join if activated.
+			 */
+	    	if(config.getJoinCommandExecutionDelay() < 1L) {
+	    		joinCallCommandModule(player);
+	    	} else {
+	    		bukkitScheduler.scheduleSyncDelayedTask(config.getPlugin(), new Runnable() {
+	    			public void run() { joinCallCommandModule(player); }// end run with delay
+	    		}, config.getJoinCommandExecutionDelay());
+	    	}// end if executionDelay
+		}// if at least one command module is enabled
 		
 	}// end onPlayerJoin
 	
@@ -99,10 +109,7 @@ public enum PlayerManagement {
 	 * Perform permission group assignment/removal on join.
 	 */
 	private void joinCallPermissionModule(Player player) {
-		/*
-		 * If the permission module has been activated.
-		 */
-		if(config.isPermissionModuleEnabled()) {
+
 			logger.debugLogInfo("Processing join permission group assignment/removal with " + config.getJoinPermissionExecutionDelay() + " ticks delay!");
 			switch (config.getPermissionModuleType()) {
 				case "vault":
@@ -115,7 +122,6 @@ public enum PlayerManagement {
 					logger.logWarning("Only luckperms or vault are valid config options for 'permissions.plugin' – check your config.yml and correct the permission plugin string: aborting now!");
 				break;
 			}// end switch permissionModule
-		}// end if permissionModule
 		
 	}// end of joinCallPermissionModule
 	
