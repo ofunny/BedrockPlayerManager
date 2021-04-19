@@ -9,7 +9,6 @@
   <version>1.4</version>
 
   <name>BedrockPlayerManager</name>
-  <!-- FIXME change it to the project's website -->
   <url>https://ofunny.world</url>
 
   <properties>
@@ -48,7 +47,7 @@
     <dependency>
     	<groupId>junit</groupId>
     	<artifactId>junit</artifactId>
-    	<version>4.11</version>
+    	<version>4.13.1</version>
     	<scope>test</scope>
     </dependency>
     
