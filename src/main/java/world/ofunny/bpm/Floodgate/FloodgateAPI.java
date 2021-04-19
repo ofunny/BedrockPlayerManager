@@ -53,7 +53,7 @@ public class FloodgateAPI {
             		floodgateAPI = new Floodgate_1_0();
             	} else {
             		// Floodgate has not been found!
-            		logger.debugLogWarning("neither Floodgate API version 1.x nor 2.x has been detected – as long as you are not using the plugin in solo mode without Floodgate this is a bug!");
+            		logger.logWarning("neither Floodgate API version 1.x nor 2.x has been detected – plugin running in 'solo mode' without Floodgate, all players will be treated as Java players!");
             		floodgateAPI = new Floodgate_Dummy();
             	}// end if Floodgate 1, 2 or none
         }// end switch version
