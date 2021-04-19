@@ -1,6 +1,6 @@
 ### ofunnys BedrockPlayerManager for Floodgate ###
 #
-# Command modul.
+# Command module.
 # This module executes commands as a server (console) or as a player (for Java, Bedrock or all clients) when a player joins the server. 
 # Keep in mind: you should not use the command module to assign groups via Luckperms or any Vault compatible plugins. Use the permission module instead.
 #
@@ -78,7 +78,7 @@ quit_commands:
       player: {}
 #
 #
-# Permission modul.
+# Permission module.
 # This module will add a defined permission group to a user whenever this user joins via a Bedrock client. It will also remove that
 # group again from the given user whenever the user joins via a Java client. It will only work with supported permission plugins 
 # (see the options below) and it is the recommended way to add/remove such groups!
