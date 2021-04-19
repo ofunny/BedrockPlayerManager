@@ -2,6 +2,7 @@
 
 package world.ofunny.bpm.Floodgate;
 
+import world.ofunny.bpm.Utils.Logger;
 import world.ofunny.bpm.config.Config;
 
 public class FloodgateAPI {
@@ -10,7 +11,7 @@ public class FloodgateAPI {
 	 * Initialisation.
 	 */
 	private static FloodgateAPI INSTANCE = null;
-	private final Floodgate floodgateAPI;
+	private final  Floodgate floodgateAPI;
 	
 	/**
 	 * Instance provider for this singleton,
@@ -29,13 +30,48 @@ public class FloodgateAPI {
 	 * constructor
 	 */
 	FloodgateAPI() {
-
-		if(Config.get().getFloodgateVersion() == 1) {
-			floodgateAPI = new Floodgate_1_0();
-		} else {
-			floodgateAPI = new Floodgate_2_0();
-		}// end if API 1.0 or 2.0
 		
+		Logger logger = Logger.get();
+		switch(Config.get().getFloodgateVersion()) {
+			case "2":
+				logger.debugLogInfo("manually initialising Floodgate API version 2.x");
+	        	floodgateAPI = new Floodgate_2_0();
+	            break;
+			case "1":
+				logger.debugLogInfo("manually initialising Floodgate API version 1.x");
+            	floodgateAPI = new Floodgate_1_0();
+                break;
+            default:
+            	// performing auto detection …
+            	if(isClass("org.geysermc.floodgate.api.FloodgateApi")) {
+            		// Floodgate 2.x has been found!
+            		logger.debugLogInfo("automatically initialising Floodgate API version 2.x");
+            		floodgateAPI = new Floodgate_2_0();
+            	} else if(isClass("org.geysermc.floodgate.FloodgateAPI")) {
+            		// Floodgate 1.x has been found!
+            		logger.debugLogInfo("automatically initialising Floodgate API version 1.x");
+            		floodgateAPI = new Floodgate_1_0();
+            	} else {
+            		// Floodgate has not been found!
+            		logger.debugLogInfo("neither Floodgate API version 1.x nor 2.x has been detected – please install the Floodgate plugin correctly!");
+            		floodgateAPI = null;
+            	}// end if Floodgate 1, 2 or none
+        }// end switch version
+
 	}//end constructor
+	
+	/**
+	 * Tests if a given class exists and returns true or false
+	 * @param className
+	 * @return
+	 */
+	public boolean isClass(String className) {
+	    try  {
+	        Class.forName(className);
+	        return true;
+	    }  catch (ClassNotFoundException e) {
+	        return false;
+	    }
+	}// end isClass
 
 }// end class FloodgateAPI

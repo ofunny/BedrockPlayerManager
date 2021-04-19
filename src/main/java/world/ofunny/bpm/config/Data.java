@@ -82,8 +82,8 @@ public class Data {
 	private boolean			placeholderAPIEnabled;
 	
 	// DEVELOPER SETTINGS
-	private int				floodgateVersion;
-	private String			floodgatePluginName;
+	private String			floodgateVersion;
+	//private String		floodgatePluginName;
 	private String			floodgate_v1_PluginName;
 	private String			floodgate_v2_PluginName;
 	private String			luckPermsPluginName;
@@ -175,7 +175,7 @@ public class Data {
 		debug 								= configuration.getBoolean("settings.debug", false);
 		
 		// DEVELOPER SETTINGS
-		floodgateVersion 					= configuration.getInt("development.floodgate_version", 1);
+		floodgateVersion 					= configuration.getString("development.floodgate_version", "auto");
 		floodgate_v1_PluginName				= configuration.getString("development.Floodgate_v1_PluginName", "floodgate-bukkit");
 		floodgate_v2_PluginName				= configuration.getString("development.Floodgate_v2_PluginName", "floodgate");
 		luckPermsPluginName					= configuration.getString("development.LuckPermsPluginName", "LuckPerms");
@@ -197,12 +197,16 @@ public class Data {
 				logger.logWarning("PlaceholderAPI plugin not found! Install the missing plugin or set PlaceholderAPI to false in your config.yml!");
 			}// end if PlaceholderAPI not installed.
 			
-			// Set the correct Floodgate name 
+			// Set the correct Floodgate name
+			
+			//FIXME
+			/* 
 			if(floodgateVersion == 1) {
 				floodgatePluginName = floodgate_v1_PluginName;
 			} else {
 				floodgatePluginName = floodgate_v2_PluginName;
 			}// end if API 1.0 or 2.0
+			*/
 			
 	}// end config
 	
@@ -252,8 +256,10 @@ public class Data {
 	public boolean isDebug() 							{ return debug; }
 	
 	// DEVELOPER SETTINGS
-	public int getFloodgateVersion() 					{ return floodgateVersion; }
-	public String getFloodgatePluginName() 				{ return floodgatePluginName; }
+	public String getFloodgateVersion() 				{ return floodgateVersion; }
+	//public String getFloodgatePluginName() 			{ return floodgatePluginName; }
+	public String getFloodgate_v1_PluginName() 			{ return floodgate_v1_PluginName; }
+	public String getFloodgate_v2_PluginName()			{ return floodgate_v2_PluginName; }
 	public String getLuckPermsPluginName() 				{ return luckPermsPluginName; }
 	public String getVaultPluginName() 					{ return vaultPluginName; }
 	public String getPlaceholderAPIPluginName() 		{ return placeholderAPIPluginName; }

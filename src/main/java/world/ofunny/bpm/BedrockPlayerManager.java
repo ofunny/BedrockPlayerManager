@@ -49,8 +49,9 @@ public class BedrockPlayerManager extends JavaPlugin {
 		 */
 		if(
 			(config.isJavaJoinCommandModuleEnabled() || config.isBedrockJoinCommandModuleEnabled() || config.isPermissionModuleEnabled()) &&
-			getServer().getPluginManager().getPlugin(config.getFloodgatePluginName()) == null) {
-			logger.logError(config.getFloodgatePluginName()+" plugin not found! Did you install Floodgate and did you set the correct version (development.floodgate_version) in the config.yml? Only the modules 'join_commands.all' and 'quit_commands.all' can work without Floodgate – in that case please deactivate all other modules in the config.yml first and than restart the server!");
+			getServer().getPluginManager().getPlugin(config.getFloodgate_v1_PluginName()) == null && 
+			getServer().getPluginManager().getPlugin(config.getFloodgate_v2_PluginName()) == null ) {
+			logger.logError("Floodgate plugin not found! Did you install Floodgate and did you set the correct version (development.floodgate_version) in the config.yml? Only the modules 'join_commands.all' and 'quit_commands.all' can work without Floodgate – in that case please deactivate all other modules in the config.yml first and than restart the server!");
 			return;
 		}// if Luckperms installes
 		
