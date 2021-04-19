@@ -1,0 +1,15 @@
+main: world.ofunny.bpm.BedrockPlayerManager
+name: ${project.artifactId}
+version: ${project.version}
+api-version: 1.13
+author: ofunny
+website: https://ofunny.world
+softdepend: [floodgate,floodgate-bukkit,LuckPerms,Vault,PlaceholderAPI]
+commands:
+  bedrockplayermanager:
+    aliases: bpm
+    description: reloads the BedrockPlayerManager configuration (changes to the plugins developer settings still require a server restart)!
+    usage: /bpm reload
+    permission: bedrockplayermanager.reload
+    permission-message: Sorry, you don't have the bedrockplayermanager permission.
+    default: false

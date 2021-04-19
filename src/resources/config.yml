@@ -1,0 +1,143 @@
+### ofunnys BedrockPlayerManager for Floodgate ###
+#
+# Command modul.
+# This module executes commands as a server (console) or as a player (for Java, Bedrock or all clients) when a player joins the server. 
+# Keep in mind: you should not use the command module to assign groups via Luckperms or any Vault compatible plugins. Use the permission module instead.
+#
+# All server and player commands support placeholders. Therfore you can use the build in placeholders {player} and {uuid} or 
+# any placeholder supported by the PlaceholderApi if installed and activated (see https://www.spigotmc.org/resources/placeholderapi.6245/ for more information).
+#
+# The placeholder {player} will be replaced with the joining players name.
+# The placerholder {uuid} will be replaced with the joining players UUID.
+# PlaceholderApi placeholder like %luckperms_primary_group_name% will also be replaced (if installed and activated correctly)
+#
+# One command per line or {} if empty – for example:
+#
+# server:
+#   - give {player} stone 1
+#
+# player:
+#   - say hi {player}
+#   - say How are you today. My UUID is {uuid}, my primary group is %luckperms_primary_group_name%!
+#
+join_commands:
+   java:
+      # If true -> the following commands will be executed when a java player joins.
+      enabled: false
+      # Execute commands as server/console.
+      server: {}
+      # Execute commands as the joining player.
+      player: {}
+      #
+   bedrock:
+      # If true -> the following commands will be executed when a bedrock player joins.
+      enabled: false
+      # Execute commands as server/console.
+      server: {}
+      # Execute commands as the joining player.
+      player: {}
+      #
+   all:
+      # If true -> the following commands will be executed for all player joins unrelated to the client
+      enabled: false
+      # Execute commands as server/console.
+      server: {}
+      # Execute commands as the joining player.
+      player: {}
+   # This plugin is listening on the PlayerJoinEvent what gets triggered when a player joins a server.
+   # Basic commands can normally be applied directly without delay. Some commands (like teleports) 
+   # have to be processed after the player has finally joined, therefore I give you the option to delay the execution
+   # in server ticks. If 0 delay causes proplems with some commands you can set it to 1 or 2 ticks for example.
+   execution_delay: 1
+#
+# This module executes commands as a server (console) or as a player (for Java, Bedrock or all clients) when a player leaves the server.
+# (Same possibilities as joincommands above but the "execution_delay" has no effect on "quit_commands"!)
+quit_commands:
+   java:
+      # If true -> the following commands will be executed when a java player quits.
+      enabled: false
+      # Execute commands as server/console.
+      server: {}
+      # Execute commands as the joining player.
+      player: {}
+      #
+   bedrock:
+      # If true -> the following commands will be executed when a bedrock player quits.
+      enabled: false
+      # Execute commands as server/console.
+      server: {}
+      # Execute commands as the joining player.
+      player: {}
+      #
+   all:
+      # If true -> the following commands will be executed for all player quits unrelated to the client
+      enabled: false
+      # Execute commands as server/console.
+      server: {}
+      # Execute commands as the joining player.
+      player: {}
+#
+#
+# Permission modul.
+# This module will add a defined permission group to a user whenever this user joins via a Bedrock client. It will also remove that
+# group again from the given user whenever the user joins via a Java client. It will only work with supported permission plugins 
+# (see the options below) and it is the recommended way to add/remove such groups!
+# (You can still use the command module above for any unsupported permission plugins and apply perms/groups via commands).
+permissions:
+   # If true, the following permission group will be added / removed depending on the clients version (Bedrock / Java) when a player joins.
+   enabled: false
+   # Supported permission plugins.
+   # Choose:
+   # plugin: "luckperms" if you use Luckperms or 
+   # plugin: "vault" for Vault compatible permission plugins like Permissions 3, bPermissions, PEX, GroupManager, 
+   #                                                              PermissionsBukkit, zPermission, SimplyPerms, Privileges, DroxPerms, xPerms
+   plugin: "luckperms"
+   #
+   # Vault specific settings
+   # Leave the following option set to "false" if your permission plugin supports global groups (recommended if available).
+   # Check carefully that your plugin really supports global groups and use them if available.
+   # >> In case of 'Luckperms' this option has no effect, it will always use global groups. <<
+   vault:
+      # If your permission plugin supports "per world" permission groups only, activate "per_world_permissions" by setting it to true.
+      per_world_permissions: false
+      # You can define a list of worlds in which the groups will be apllied or leave it empty for all worlds on your server (Vault only).
+      # WARNING: the following 'bedrock_group_name' must exist as permission group for each defined world otherwise 
+      # you might get an error each time the plugin trys to set or remove this group. So create it in your permission plugin first!
+      worlds: {}
+      #
+   # The permission group to add for bedrock users or to remove for java users.
+   # If a user joins via Floodgate, the group gets applied otherwise removed (if previously inherited by the joining user).
+   # Make sure to add the group in your permission plugin first!
+   bedrock_group_name: "bedrock_user"
+   # This plugin is listening on the PlayerJoinEvent what gets triggered when a player joins a server.
+   # Normally there shouldn't be no reason to delay permission group assignments – this is more relevant for join commands.
+   # However, if 0 delay causes proplems with some permission plugin you can set it to 1 or 2 ticks for example.
+   execution_delay: 0
+#
+# 
+settings:
+   # Activates the PlaceholderAPI support for all command strings above (the PlaceholderAPI plugin has to be installed correctly to use this feature)!
+   # (see https://www.spigotmc.org/resources/placeholderapi.6245/ for more information).
+   PlaceholderAPI: true
+   # Activate advanced debug messages.
+   # Only recommended while testing. It will spam your servers console with a lot of debug messages :)
+   debug: false
+#
+# Please note: changes to the development options will always require a server restart.
+# (The plugin reload command will update the values but they won't have any effect until the next restart).
+development:
+   # What Floodgate version are you using? Currently supported values: 1 or 2
+   # 1 for Floodgate v1.x and 2 for Floodgate v2.x
+   floodgate_version: 1
+   #
+   # Names of the softdepend plugins (for the internal availability check).
+   # Only change that if you know what you are doing. Normal plugin user may never need to change that at all!
+   Floodgate_v1_PluginName: "floodgate-bukkit"
+   Floodgate_v2_PluginName: "floodgate"
+   LuckPermsPluginName: "LuckPerms"
+   VaultPluginName: "Vault"
+   PlaceholderAPIPluginName: "PlaceholderAPI"
+#
+#
+# Do not touch the following lines!
+version: ${project.version}
