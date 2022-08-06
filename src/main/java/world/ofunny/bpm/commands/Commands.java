@@ -8,6 +8,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 
+import org.jetbrains.annotations.NotNull;
 import world.ofunny.bpm.Utils.Logger;
 import world.ofunny.bpm.config.Config;
 
@@ -16,8 +17,8 @@ public class Commands implements CommandExecutor {
 	/*
 	 * Members
 	 */
-	private Logger logger;
-	private Config config;
+	private final Logger logger;
+	private final Config config;
 	
 	/**
 	 * Constructor
@@ -38,7 +39,7 @@ public class Commands implements CommandExecutor {
 	 * I gonna rebuild that a little bit. That's actually the reason why there is a switch/case within this method.
 	 */
 	@Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String @NotNull [] args) {
 
 		// Get the senders name
 		String senderName = sender.getName();
@@ -56,28 +57,25 @@ public class Commands implements CommandExecutor {
 		/*
 		 * Execute the called action.
 		 */
-        switch(args[0]){
-            case "reload":
-    			if(isAllowed(sender, senderName, "bedrockplayermanager.reload", true)) {	
-    				config.reloadConfiguration();
-    				sender.sendMessage("The plugin configuartion has been updated with the latest values form the config.yml (please note: changes to the plugins developer settings still require a server restart)!");
-    			}// end if player does not have enough permissions
-        		break;
-            default:
-            	logger.debugLogInfo("'"+senderName+"' performed the 'bedrockplayermanager command with an unregistered argument: "+args[0]+"'!");
-            	sender.sendMessage("The argument has to be 'reload'!");
-                break;
-        }//end switch "on" or "off"
+		if ("reload".equals(args[0])) {
+			if (isAllowed(sender, senderName)) {
+				config.reloadConfiguration();
+				sender.sendMessage("The plugin configuartion has been updated with the latest values form the config.yml (please note: changes to the plugins developer settings still require a server restart)!");
+			}// end if player does not have enough permissions
+		} else {
+			logger.debugLogInfo("'" + senderName + "' performed the 'bedrockplayermanager command with an unregistered argument: " + args[0] + "'!");
+			sender.sendMessage("The argument has to be 'reload'!");
+		}//end switch "on" or "off"
 
-        // If the player (or console) uses our command correct, we can return true
+		// If the player (or console) uses our command correct, we can return true
         
         return true;
     }// end onCommand
 
-	private boolean isAllowed(CommandSender sender, String senderName, String permissionNote, boolean consoleAllowed) {
+	private boolean isAllowed(CommandSender sender, String senderName) {
 		// Checks for players
-		if(sender instanceof Player) {
-			if(sender.hasPermission(permissionNote)) {
+		if (sender instanceof Player) {
+			if (sender.hasPermission("bedrockplayermanager.reload")) {
 				return true;
 			} else {
 				logger.debugLogInfo("'"+senderName+"' performed the 'bedrockplayermanager' command with insufficient permissions (bedrockplayermanager.reload)!");
@@ -87,18 +85,18 @@ public class Commands implements CommandExecutor {
 		}// end if player
 		
 		// Checks for the console
-		if(sender instanceof ConsoleCommandSender) {
-			if(consoleAllowed) {
+		if (sender instanceof ConsoleCommandSender) {
+			if (true) {
 				return true;
 			} else {
-				logger.debugLogInfo("'"+senderName+"' performed the 'bedrockplayermanager' command with insufficient permissions (console as command sender is not allowed)!");
+				logger.debugLogInfo("'" + senderName + "' performed the 'bedrockplayermanager' command with insufficient permissions (console as command sender is not allowed)!");
 				sender.sendMessage("Insufficient permissions (console as command sender is not allowed)!");
 				return false;
 			}// end if console allowed
 		}// end if console sender
 		
 		// For all other kinds of senders!
-		logger.debugLogInfo("'"+senderName+"' is neither a player nor the console!");
+		logger.debugLogInfo("'" + senderName + "' is neither a player nor the console!");
 		return false;
 	}// is the execution allowed
 	

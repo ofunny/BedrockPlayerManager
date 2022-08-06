@@ -6,6 +6,6 @@ import org.bukkit.entity.Player;
 
 public interface Floodgate {
 	
-	public boolean isBedrockPlayer(Player player);
+	boolean isBedrockPlayer(Player player);
 
 }// end Floodgate

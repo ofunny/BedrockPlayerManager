@@ -31,7 +31,7 @@ public class EventListener implements Listener {
     
     
 	/**
-	 * Called when a player leves a server.
+	 * Called when a player leaves a server.
 	 */
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerQuitEvent(PlayerQuitEvent event) {

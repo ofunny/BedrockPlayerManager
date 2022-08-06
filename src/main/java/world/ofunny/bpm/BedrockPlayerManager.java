@@ -37,11 +37,12 @@ public class BedrockPlayerManager extends JavaPlugin {
         /*
          * Check if the configuration did load successfully.
          */
-        if(!config.hasConfiguration()) {
+        if (!config.hasConfiguration()) {
         	logger.logError("Configuration object is null – aborting now!");
             pluginManager.disablePlugin(this);
             return;
-        }// end if configuration
+        }
+		// end if configuration
 		
 	    /*
 	     * Register EventListener.
@@ -49,7 +50,7 @@ public class BedrockPlayerManager extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new EventListener(), this);
 		
         /*
-         * Lets register all our commands now.
+         * Let's register all our commands now.
          */
         CommandManager.get().initialise();
 

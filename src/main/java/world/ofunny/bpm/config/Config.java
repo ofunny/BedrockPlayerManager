@@ -5,6 +5,7 @@ package world.ofunny.bpm.config;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import world.ofunny.bpm.BedrockPlayerManager;
@@ -23,13 +24,8 @@ public class Config extends Data{
 	 */
 	private static Config INSTANCE = null;
 	private FileConfiguration configuration = null;
-	private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy_MM_dd-HH_mm_ss");  
-	
-	/*
-	 * YAML  
-	 */
-	private final String yamlFileName		  = "config.yml";
-	
+	private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy_MM_dd-HH_mm_ss");
+
 	/**
 	 * Constructor of the config singleton.
 	 * (Leave it private, we do not allow any instances aside of this Singleton)!
@@ -104,12 +100,16 @@ public class Config extends Data{
 	 * Loads the config of this plugin via Spigots/Papers config API.
 	 * It will only load the config once (usually at plugin activation), so a reload is not possible!
 	 *
-	 * @param plugin holds a reference of this plugin for the "getPlugin()" method of this class.
+	 * @param reload holds a reference of this plugin for the "getPlugin()" method of this class.
 	 */
 	private void loadConfiguration(boolean reload) {
 
 		// Check if the plugin config folder and config yamnl exists, otherwise create the default plugins config directory.
 		if (!getPlugin().getDataFolder().exists()) getPlugin().getDataFolder().mkdir();
+		/*
+		 * YAML
+		 */
+		String yamlFileName = "config.yml";
 		File file = new File(getPlugin().getDataFolder(), yamlFileName);
 		
 		// Check if config file is missing or if it is from another plugin version.
@@ -123,7 +123,7 @@ public class Config extends Data{
 			 * (Sorry I don't have the time to write a migration method what keeps the values including all comments.
 			 *  And I really don't like the Spigot-API version what stripes all of them! Maybe a thing for the next update.)
 			 */
-			if(!getPlugin().getConfig().getString("version").equals(getPluginVersion())) {
+			if (!Objects.equals(getPlugin().getConfig().getString("version"), getPluginVersion())) {
 				// Reanming the old config and copying the default config from the plugins resources.
 				file.renameTo(new File(getPlugin().getDataFolder(), dateTimeFormatter.format(LocalDateTime.now()) + "-old." + yamlFileName));
 				getPlugin().saveDefaultConfig();
@@ -139,13 +139,13 @@ public class Config extends Data{
 		}// if file does not exist
 
 		// If we should reload the configuration.
-		if(reload) getPlugin().reloadConfig();
+		if (reload) getPlugin().reloadConfig();
 		
-		// Load config if existing and set the defined options within this classes members.
+		// Load config if existing and set the defined options within these classes members.
 		setConfiguration(getPlugin().getConfig());
 		
-		// sets all config options within this class and performs post processing.
-		if(this.configuration != null) setData(this.configuration);// should we set all options
+		// sets all config options within this class and performs post-processing.
+		if (this.configuration != null) setData(this.configuration);// should we set all options
 
 	}//end loadConfiguration
 

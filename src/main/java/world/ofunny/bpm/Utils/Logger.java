@@ -21,7 +21,7 @@ public enum Logger {
 	/*
 	 * Initialise
 	 */
-	private java.util.logging.Logger logger;
+	private final java.util.logging.Logger logger;
 	private boolean debug = false;
 	private final String logMessagePrefix = "[BedrockPlayerManager]: ";
 	
@@ -48,7 +48,7 @@ public enum Logger {
 	}// get Logger
 
 	/**
-	 * Create a error log entry with the given description.
+	 * Create an error log entry with the given description.
 	 * @param Message a text note to describe/explain the error.
 	 */
 	public void logError(String Message) {
