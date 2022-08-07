@@ -16,7 +16,7 @@ public class Data {
 	/**
 	 * Dependencies 
 	 */
-	private Logger logger;
+	private final Logger logger;
 	
 	/**
 	 * Constructor
@@ -82,14 +82,10 @@ public class Data {
 	private boolean			placeholderAPIEnabled;
 	
 	// DEVELOPER SETTINGS
-	private String			floodgateVersion;
-	//private String		floodgatePluginName;
-	private String			floodgate_v1_PluginName;
-	private String			floodgate_v2_PluginName;
 	private String			luckPermsPluginName;
 	private String			vaultPluginName;
 	private String			placeholderAPIPluginName;
-	
+
 	// OTHER STUFF
 	private String			dataFolderPath;
 	
@@ -175,9 +171,6 @@ public class Data {
 		debug 								= configuration.getBoolean("settings.debug", false);
 		
 		// DEVELOPER SETTINGS
-		floodgateVersion 					= configuration.getString("development.floodgate_version", "auto");
-		floodgate_v1_PluginName				= configuration.getString("development.Floodgate_v1_PluginName", "floodgate-bukkit");
-		floodgate_v2_PluginName				= configuration.getString("development.Floodgate_v2_PluginName", "floodgate");
 		luckPermsPluginName					= configuration.getString("development.LuckPermsPluginName", "LuckPerms");
 		vaultPluginName						= configuration.getString("development.VaultPluginName", "Vault");
 		placeholderAPIPluginName			= configuration.getString("development.PlaceholderAPIPluginName", "PlaceholderAPI");
@@ -192,7 +185,7 @@ public class Data {
 			logger.setDebug(debug);
 	
 			// Activate placeholder support only if the PlaceholderApi plugin has been loaded before.
-			if(placeholderAPIEnabled && Bukkit.getPluginManager().getPlugin(placeholderAPIPluginName) == null) {
+			if (placeholderAPIEnabled && Bukkit.getPluginManager().getPlugin(placeholderAPIPluginName) == null) {
 				placeholderAPIEnabled = false;
 				logger.logWarning("PlaceholderAPI plugin not found! Install the missing plugin or set PlaceholderAPI to false in your config.yml!");
 			}// end if PlaceholderAPI not installed.
@@ -247,14 +240,9 @@ public class Data {
 	public boolean isDebug() 							{ return debug; }
 	
 	// DEVELOPER SETTINGS
-	public String getFloodgateVersion() 				{ return floodgateVersion; }
-	//public String getFloodgatePluginName() 			{ return floodgatePluginName; }
-	public String getFloodgate_v1_PluginName() 			{ return floodgate_v1_PluginName; }
-	public String getFloodgate_v2_PluginName()			{ return floodgate_v2_PluginName; }
 	public String getLuckPermsPluginName() 				{ return luckPermsPluginName; }
 	public String getVaultPluginName() 					{ return vaultPluginName; }
-	public String getPlaceholderAPIPluginName() 		{ return placeholderAPIPluginName; }
-	
+
 	// OTHER STUFF
 	public String getDataFolderPath() 					{ return dataFolderPath; }
 

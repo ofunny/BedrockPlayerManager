@@ -29,13 +29,13 @@ public enum PlayerManagement {
 	/*
 	 * Members
 	 */
-	private Logger logger;
-	private Config config;
-    private Map<UUID, Boolean> playerBedrockStateCache = new HashMap<UUID, Boolean>();
-	private BukkitScheduler bukkitScheduler;
+	private final Logger logger;
+	private final Config config;
+    private final Map<UUID, Boolean> playerBedrockStateCache = new HashMap<UUID, Boolean>();
+	private final BukkitScheduler bukkitScheduler;
 	
 	/*
-	 * Contructor
+	 * Constructor.
 	 */
 	private PlayerManagement() {
 		
@@ -57,7 +57,7 @@ public enum PlayerManagement {
 		 * Obtain player object and cancel if null.
 		 */
 		Player player = event.getPlayer();
-		if(player == null) {
+		if (player == null) {
 			logger.logWarning("Player was null, could not proceed.");
 			return;
 		}// if player
@@ -72,34 +72,34 @@ public enum PlayerManagement {
 		/*
 		 * If the permission module has been activated.
 		 */
-		if(config.isPermissionModuleEnabled()) {
+		if (config.isPermissionModuleEnabled()) {
 			/*
 			 * Perform permission group assignment/removal on join if activated.
 			 */
-	    	if(config.getJoinPermissionExecutionDelay() < 1L) {
+	    	if (config.getJoinPermissionExecutionDelay() < 1L) {
 	    		joinCallPermissionModule(player);
 	    	} else {
-	    		bukkitScheduler.scheduleSyncDelayedTask(config.getPlugin(), new Runnable() { 
-	    			public void run() { joinCallPermissionModule(player); }// end run with delay
-	    		}, config.getJoinPermissionExecutionDelay());
+				// end run with delay
+				bukkitScheduler.scheduleSyncDelayedTask(config.getPlugin(), () -> joinCallPermissionModule(player),
+						config.getJoinPermissionExecutionDelay());
 	    	}// end if executionDelay
 		}// end if permissionModule
 
 		/*
 		 * if at least one command module is enabled
 		 */
-		if(config.isJavaJoinCommandModuleEnabled() ||
+		if (config.isJavaJoinCommandModuleEnabled() ||
 		   config.isBedrockJoinCommandModuleEnabled() ||
 		   config.isAllJoinCommandModuleEnabled()) {
 			/*
-			 * Perform command execution on join on join if activated.
+			 * Perform command execution on join if activated.
 			 */
-	    	if(config.getJoinCommandExecutionDelay() < 1L) {
+	    	if (config.getJoinCommandExecutionDelay() < 1L) {
 	    		joinCallCommandModule(player);
 	    	} else {
-	    		bukkitScheduler.scheduleSyncDelayedTask(config.getPlugin(), new Runnable() {
-	    			public void run() { joinCallCommandModule(player); }// end run with delay
-	    		}, config.getJoinCommandExecutionDelay());
+				// end run with delay
+				bukkitScheduler.scheduleSyncDelayedTask(config.getPlugin(), () -> joinCallCommandModule(player),
+						config.getJoinCommandExecutionDelay());
 	    	}// end if executionDelay
 		}// if at least one command module is enabled
 		
@@ -138,21 +138,21 @@ public enum PlayerManagement {
 		/*
 		 * If the java join command module has been activated.
 		 */
-		if(config.isJavaJoinCommandModuleEnabled()) {
-			if(!FloodgateAPI.get().isBedrockPlayer(player)) CommandModule.get().performJoinCommandsForJava(player);
+		if (config.isJavaJoinCommandModuleEnabled()) {
+			if (!FloodgateAPI.get().isBedrockPlayer(player)) CommandModule.get().performJoinCommandsForJava(player);
 		}// end if isJavaJoinCommandModuleEnabled
 		
 		/*
 		 * If the java join command module has been activated.
 		 */
-		if(config.isBedrockJoinCommandModuleEnabled()) {
-			if(FloodgateAPI.get().isBedrockPlayer(player)) CommandModule.get().performJoinCommandsForBedrock(player);
+		if (config.isBedrockJoinCommandModuleEnabled()) {
+			if (FloodgateAPI.get().isBedrockPlayer(player)) CommandModule.get().performJoinCommandsForBedrock(player);
 		}// end if isJoinBedrockCommandModuleEnabled
 		
 		/*
 		 * If the "all" join command module has been activated.
 		 */
-		if(config.isAllJoinCommandModuleEnabled()) {
+		if (config.isAllJoinCommandModuleEnabled()) {
 			CommandModule.get().performJoinCommandsForAll(player);
 		}// end if isJoinAllCommandModuleEnabled
 		
@@ -167,7 +167,7 @@ public enum PlayerManagement {
 		 * Obtain player object and cancel if null.
 		 */
 		Player player = event.getPlayer();
-		if(player == null) {
+		if (player == null) {
 			logger.logWarning("Player was null, could not proceed.");
 			return;
 		}// if player
@@ -178,7 +178,7 @@ public enum PlayerManagement {
 		logger.debugLogInfo("Processing quit event!");
 
 		/*
-		 * Get the players Bedrock state from cache and than remove it.
+		 * Get the players Bedrock state from cache and then remove it.
 		 * (I need this, since Floodgate will always remove the player faster than my plugin – otherwise all 
 		 *  players would be treated as Java players on quit since Floodgate no longer holds the state).
 		 */
@@ -187,21 +187,21 @@ public enum PlayerManagement {
 		/*
 		 * If the java command module has been activated.
 		 */
-		if(config.isJavaQuitCommandModuleEnabled()) {
-			if(!isBedrockPlayer) CommandModule.get().performQuitCommandsForJava(player);
+		if (config.isJavaQuitCommandModuleEnabled()) {
+			if (!isBedrockPlayer) CommandModule.get().performQuitCommandsForJava(player);
 		}// end if isJavaQuitCommandModuleEnabled
 		
 		/*
 		 * If the java command module has been activated.
 		 */
-		if(config.isBedrockQuitCommandModuleEnabled()) {
+		if (config.isBedrockQuitCommandModuleEnabled()) {
 			if(isBedrockPlayer) CommandModule.get().performQuitCommandsForBedrock(player);
 		}// end if isQuitBedrockCommandModuleEnabled
 		
 		/*
 		 * If the "all" command module has been activated.
 		 */
-		if(config.isAllQuitCommandModuleEnabled()) {
+		if (config.isAllQuitCommandModuleEnabled()) {
 			CommandModule.get().performQuitCommandsForAll(player);
 		}// end if isQuitAllCommandModuleEnabled
 		

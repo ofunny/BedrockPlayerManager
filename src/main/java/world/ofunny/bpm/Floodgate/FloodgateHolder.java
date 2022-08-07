@@ -5,22 +5,22 @@ package world.ofunny.bpm.Floodgate;
 import org.bukkit.entity.Player;
 import org.geysermc.floodgate.api.FloodgateApi;
 
-class Floodgate_2_0 implements Floodgate {
+class FloodgateHolder implements Floodgate {
 	
 	/*
 	 * Members
 	 */
-	private FloodgateApi floodgateApi;
+	private final FloodgateApi floodgateApi;
 	
 	/**
 	 * Constructor
 	 */
-	public Floodgate_2_0() {
+	public FloodgateHolder() {
 		
-		// Just holding the refernce to save the lookup each call.
+		// Just holding the reference to save the lookup each call.
 		floodgateApi = FloodgateApi.getInstance();
 		
-	}// end Floodgate_2_0
+	}// end Floodgate
 	
 	/**
 	 * Check if user is coming from Floodgate
@@ -29,4 +29,4 @@ class Floodgate_2_0 implements Floodgate {
 		return floodgateApi.isFloodgatePlayer(player.getUniqueId());
 	}// end isBedrockPlayer 
 	
-}// end class Floodgate_2_0
+}// end class Floodgate

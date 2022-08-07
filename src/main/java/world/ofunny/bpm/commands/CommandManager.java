@@ -50,6 +50,7 @@ public enum CommandManager {
         /*
          * List of all commands (executor and tab completion).
          */
+        assert bedrockplayermanager != null;
         bedrockplayermanager.setExecutor(new Commands());
         bedrockplayermanager.setTabCompleter(new TabComplete());
 

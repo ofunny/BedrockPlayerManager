@@ -126,14 +126,9 @@ settings:
 # Please note: changes to the development options will always require a server restart.
 # (The plugin reload command will update the values but they won't have any effect until the next restart).
 development:
-   # What Floodgate version are you using? Currently supported values: auto, 1 or 2
-   # "auto" for automated detection, "1" for Floodgate v1.x and "2" for Floodgate v2.x
-   floodgate_version: "auto"
-   #
    # Names of the softdepend plugins (for the internal availability check).
    # Only change that if you know what you are doing. Normal plugin user may never need to change that at all!
-   Floodgate_v1_PluginName: "floodgate-bukkit"
-   Floodgate_v2_PluginName: "floodgate"
+   Floodgate_PluginName: "floodgate"
    LuckPermsPluginName: "LuckPerms"
    VaultPluginName: "Vault"
    PlaceholderAPIPluginName: "PlaceholderAPI"

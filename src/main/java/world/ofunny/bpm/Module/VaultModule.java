@@ -29,13 +29,13 @@ public enum VaultModule {
 	 * Initialisation
 	 */
 	private	Permission vaultPermissionService = null;
-	private Logger logger;
-	private Config config;
+	private final Logger logger;
+	private final Config config;
 	
 	/*
-	 * Contructor
+	 * Constructor.
 	 */
-	private VaultModule() {
+	VaultModule() {
 		
 		/*
 		 * Local dependencies
@@ -46,16 +46,16 @@ public enum VaultModule {
 		/*
 		 * Try to Initialise Vault support.
 		 */
-		if(!setupPermissions()) {
-			logger.logError(config.getVaultPluginName()+" plugin not found! Vault must be installed on your server for the permissions module to work properly – otherwise deactivate Vault in the permission module in your config.yml!");
+		if (!setupPermissions()) {
+			logger.logError(config.getVaultPluginName() + " plugin not found! Vault must be installed on your server for the permissions module to work properly – otherwise deactivate Vault in the permission module in your config.yml!");
 		}// if Vault support
 		
 		/*
 		 * Check if the bedrock group is present in the registrated permission method.
 		 */
-		if(vaultPermissionService != null) {
+		if (vaultPermissionService != null) {
 			String[] availablePermissionGroups = vaultPermissionService.getGroups();
-			if(!Arrays.stream(availablePermissionGroups).anyMatch(group -> group.equals(config.getBedrockPermissionGroup()))) {
+			if(Arrays.stream(availablePermissionGroups).noneMatch(group -> group.equals(config.getBedrockPermissionGroup()))) {
 				logger.logWarning(
 								"Could not find the group '" + config.getBedrockPermissionGroup() + "' in your permission plugin: '" + vaultPermissionService.getName() + "'! "+
 								"We won't check for groups again until the next restart. "+
@@ -63,10 +63,10 @@ public enum VaultModule {
 								"You can ignore this message if you know that the '" + config.getBedrockPermissionGroup() + "' group exists and is assignable! We only found the following groups:"
 								);
 				Arrays.stream(availablePermissionGroups).forEach(group -> { 
-					logger.logWarning("'"+group+"'");
+					logger.logWarning("'" + group + "'");
 				});
 			} else {
-				logger.debugLogInfo("Vault service: found permission group '"+config.getBedrockPermissionGroup()+"' in the registered permission plugin '" + vaultPermissionService.getName() + "'. Ready to proceed!");
+				logger.debugLogInfo("Vault service: found permission group '" + config.getBedrockPermissionGroup()+"' in the registered permission plugin '" + vaultPermissionService.getName() + "'. Ready to proceed!");
 			}// end if group not existing
 		}// end if vaultPermissionService
 		
@@ -76,7 +76,7 @@ public enum VaultModule {
 	 * Initialise the Vault api if available.
 	 */
 	private boolean setupPermissions() {
-		if(Bukkit.getServer().getPluginManager().getPlugin(config.getVaultPluginName()) == null) return false;
+		if (Bukkit.getServer().getPluginManager().getPlugin(config.getVaultPluginName()) == null) return false;
         RegisteredServiceProvider<Permission> rsp = Bukkit.getServer().getServicesManager().getRegistration(Permission.class);
     	if (rsp == null) return false;
         vaultPermissionService = rsp.getProvider();
@@ -98,7 +98,7 @@ public enum VaultModule {
 		/*
 		 * If the Vault service is given ...
 		 */
-		if(vaultPermissionService == null) {
+		if (vaultPermissionService == null) {
 			logger.logWarning("Vault service not found: aborting now!");
 			return;
 		}// end if vaultPermissionService
@@ -106,7 +106,7 @@ public enum VaultModule {
 		/*
 		 * Check if group support is given.
 		 */
-		if(!vaultPermissionService.isEnabled()) {
+		if (!vaultPermissionService.isEnabled()) {
 			logger.logWarning("The permission method in Vault is not enabled: aborting now!");
 			return;
 		}// end isEnabled
@@ -114,7 +114,7 @@ public enum VaultModule {
 		/*
 		 * Check if group support is given.
 		 */
-		if(!vaultPermissionService.hasGroupSupport()) {
+		if (!vaultPermissionService.hasGroupSupport()) {
 			logger.logWarning("The permission method '" + vaultPermissionService.getName() + "' registrated in Vault does not support permission groups: aborting now!");
 			return;
 		}// end hasGroupSupport
@@ -127,7 +127,7 @@ public enum VaultModule {
     	/*
     	 * If global groups or per world groups are active.
     	 */
-    	if(config.isVaultPerWorldPermissions()) {
+    	if (config.isVaultPerWorldPermissions()) {
     		performPerWorldGroupChange(player, offlinePlayer);
     	} else {
     		performGlobalGroupChange(player, offlinePlayer);
@@ -158,14 +158,14 @@ public enum VaultModule {
 		/*
 		 * If no groups where defined, we perform it for all worlds on the server.
 		 */
-		if(config.getVaultPermissionWorlds().size() > 0) {
+		if (config.getVaultPermissionWorlds().size() > 0) {
 			
 			/*
 			 * Perform the group change only for defined worlds
 			 */
 			config.getVaultPermissionWorlds().forEach((String worldName) -> {
 				World world = Bukkit.getServer().getWorld(worldName);
-				if(world != null) { 
+				if (world != null) {
 					changeGroup(player, offlinePlayer, world.getName());
 				} else {
 					logger.logWarning("Vault service (" + vaultPermissionService.getName() + "): there is no active world called '"+worldName+"' on your server. Skipping group change for '"+worldName+"'!");
@@ -192,12 +192,12 @@ public enum VaultModule {
 		 * Inits
 		 */
 		String debugWorldName = worldName;
-		if(debugWorldName == null) debugWorldName = "global";
+		if (debugWorldName == null) debugWorldName = "global";
 		
 		/*
 		 * Assign or remove permission group depending on the client.
 		 */
-		if(FloodgateAPI.get().isBedrockPlayer(player)) {
+		if (FloodgateAPI.get().isBedrockPlayer(player)) {
 
         	/*
         	 * Add group to the user.
@@ -207,7 +207,7 @@ public enum VaultModule {
 				if(!vaultPermissionService.playerInGroup(worldName, offlinePlayer, config.getBedrockPermissionGroup()))
 					vaultPermissionService.playerAddGroup(worldName, offlinePlayer, config.getBedrockPermissionGroup());
 			} catch (Exception e) {
-				logger.logWarning("["+debugWorldName+"] Vault service (" + vaultPermissionService.getName() + "): could not add the permission group '"+config.getBedrockPermissionGroup()+"' for player " + offlinePlayer.getName()+". Does the group exist? Error: "+e.getMessage());
+				logger.logWarning("["+debugWorldName+"] Vault service (" + vaultPermissionService.getName() + "): could not add the permission group '" + config.getBedrockPermissionGroup() + "' for player " + offlinePlayer.getName() + ". Does the group exist? Error: " + e.getMessage());
 			}// end try/catch
             
 		} else {
@@ -215,12 +215,12 @@ public enum VaultModule {
 			/*
 			 *  Remove group from the user.
 			 */
-			logger.debugLogInfo("["+debugWorldName+"] Vault service (" + vaultPermissionService.getName() + "): removing permission group '"+config.getBedrockPermissionGroup()+"' for player " + offlinePlayer.getName());
+			logger.debugLogInfo("["+debugWorldName+"] Vault service (" + vaultPermissionService.getName() + "): removing permission group '" + config.getBedrockPermissionGroup()+"' for player " + offlinePlayer.getName());
 			try {
-				if(vaultPermissionService.playerInGroup(worldName, offlinePlayer, config.getBedrockPermissionGroup()))
+				if (vaultPermissionService.playerInGroup(worldName, offlinePlayer, config.getBedrockPermissionGroup()))
 					vaultPermissionService.playerRemoveGroup(worldName, offlinePlayer, config.getBedrockPermissionGroup());
 			} catch (Exception e) {
-				logger.logWarning("["+debugWorldName+"] Vault service (" + vaultPermissionService.getName() + "): could not remove the permission group '"+config.getBedrockPermissionGroup()+"' for player " + offlinePlayer.getName()+". Does the group exist? Error: "+e.getMessage());
+				logger.logWarning("["+debugWorldName+"] Vault service (" + vaultPermissionService.getName() + "): could not remove the permission group '" + config.getBedrockPermissionGroup() + "' for player " + offlinePlayer.getName()+". Does the group exist? Error: " + e.getMessage());
 			}// end try/catch
 			
 		}// end if Bedrock noob	
