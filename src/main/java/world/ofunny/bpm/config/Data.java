@@ -82,11 +82,10 @@ public class Data {
 	private boolean			placeholderAPIEnabled;
 	
 	// DEVELOPER SETTINGS
-	private String			floodgate_PluginName;
 	private String			luckPermsPluginName;
 	private String			vaultPluginName;
 	private String			placeholderAPIPluginName;
-	
+
 	// OTHER STUFF
 	private String			dataFolderPath;
 	
@@ -172,7 +171,6 @@ public class Data {
 		debug 								= configuration.getBoolean("settings.debug", false);
 		
 		// DEVELOPER SETTINGS
-		floodgate_PluginName				= configuration.getString("development.Floodgate_v2_PluginName", "floodgate");
 		luckPermsPluginName					= configuration.getString("development.LuckPermsPluginName", "LuckPerms");
 		vaultPluginName						= configuration.getString("development.VaultPluginName", "Vault");
 		placeholderAPIPluginName			= configuration.getString("development.PlaceholderAPIPluginName", "PlaceholderAPI");
@@ -242,11 +240,9 @@ public class Data {
 	public boolean isDebug() 							{ return debug; }
 	
 	// DEVELOPER SETTINGS
-	public String getFloodgate_PluginName()			{ return floodgate_PluginName; }
 	public String getLuckPermsPluginName() 				{ return luckPermsPluginName; }
 	public String getVaultPluginName() 					{ return vaultPluginName; }
-	public String getPlaceholderAPIPluginName() 		{ return placeholderAPIPluginName; }
-	
+
 	// OTHER STUFF
 	public String getDataFolderPath() 					{ return dataFolderPath; }
 
